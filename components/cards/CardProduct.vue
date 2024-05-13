@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import type { Products } from '~/types/product';
+
+
 const props = defineProps({
     product: {
         type:
@@ -6,6 +9,26 @@ const props = defineProps({
         default: {},
     }
 });
+
+const oneProduct = ref(props.product);
+
+const addCart = () => {
+    oneProduct.value.isCart = !oneProduct.value.isCart;
+    let localStorageData = localStorage.getItem("products");
+    let productOfCart: Products[] = [];
+
+    if (localStorageData) {
+        productOfCart = JSON.parse(localStorageData);
+    }
+    
+    if (oneProduct.value.isCart) {
+        productOfCart.push(oneProduct.value);
+        localStorage.setItem("products", JSON.stringify(productOfCart));
+    } else {
+        productOfCart = productOfCart.filter((item) => item.id !== oneProduct.value.id);
+        localStorage.setItem("products", JSON.stringify(productOfCart));
+    }
+}
 </script>
 
 <template>
