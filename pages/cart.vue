@@ -5,6 +5,10 @@ const totalPrice = computed(() => {
     return products.value.filter((products) => products.price !== 
     undefined).reduce((accumulator, currentValue) => accumulator + 
     currentValue.price!, 0);
+const removeCart = (id: number) => {
+    products.value = products.value.filter((item) => item.id !== id);
+    localStorage.setItem("products", JSON.stringify(products.value));
+}
 })
 
 onMounted(() => {
